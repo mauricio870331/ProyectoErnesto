@@ -1,0 +1,60 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 4/02/2021, 09:06:42 PM
+    Author     : Mauricio Herrera
+*/
+.lg-icon {
+    font-size: 17px;
+}
+
+.finger-check {
+    cursor: pointer;
+}
+
+.img{
+    margin:10px auto;
+    border-radius:5px;
+    border: 1px solid #ccc;
+    padding:13px;
+    width:210px;
+    height:250px;
+    background-size: 100% 100%;
+    background-repeat:no-repeat;
+    background:url(../images/finger.png);
+    background-size: cover;
+}
+
+.ct2{
+    margin:10px auto;
+    border-radius:5px;
+    border: 1px solid #ccc;
+    padding:5px;
+    width:270px;
+    height:30px;;
+    background-size: 100% 100%;       
+}
+
+.dataUser{
+    margin:10px auto;
+    border-radius:5px;
+    border: 1px solid #ccc;
+    padding:5px;
+    width:270px;
+    height:50px;;
+    background-size: 100% 100%; 
+    /*text-align: center;*/
+}
+
+.img img{
+    width: 100%;
+}
+
+.btnEvtTable{
+    cursor: pointer;
+    margin-left: 5px;
+}
+

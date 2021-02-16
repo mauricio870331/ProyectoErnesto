@@ -1,0 +1,28 @@
+Options +FollowSymLinks
+RewriteEngine on
+#Login
+RewriteRule ^Login$ login.php
+#Marcaciones
+RewriteRule ^Marcaciones$ index.php
+RewriteRule ^Views/CrearEmpleados$ Views/CrearEmpleados.php
+RewriteRule ^Views/CrearEmpleados/([a-zA-Z0-9]+)$ Views/CrearEmpleados.php?mensaje=$1
+RewriteRule ^Views/ListarEmpleados$ Views/ListarEmpleados.php
+RewriteRule ^Views/ListarEmpleados/([a-zA-Z0-9]+)$ Views/ListarEmpleados.php?mensaje=$1
+RewriteRule ^Views/EditarEmpleados/([0-9]+)$ Views/EditarEmpleados.php?token=$1
+RewriteRule ^Views/PermisosEmpleados/([0-9]+)$ Views/PermisosEmpleados.php?token=$1
+#Empresas
+RewriteRule ^Views/CrearEmpresas$ Views/CrearEmpresas.php
+RewriteRule ^Views/CrearEmpresas/([a-zA-Z0-9]+)$ Views/CrearEmpresas.php?mensaje=$1
+RewriteRule ^Views/ListarEmpresas$ Views/ListarEmpresas.php
+RewriteRule ^Views/EditarEmpresas/([0-9]+)$ Views/EditarEmpresas.php?token=$1
+RewriteRule ^Views/ListarEmpresas/([a-zA-Z0-9]+)$ Views/ListarEmpresas.php?mensaje=$1
+#Departamentos
+RewriteRule ^Views/ListarDepartamentos$ Views/ListarDepartamentos.php
+RewriteRule ^Views/CrearDepartamentos$ Views/CrearDepartamentos.php
+RewriteRule ^Views/CrearDepartamentos/([a-zA-Z0-9]+)$ Views/CrearDepartamentos.php?mensaje=$1
+RewriteRule ^Views/ListarDepartamentos/([a-zA-Z0-9]+)$ Views/ListarDepartamentos.php?mensaje=$1
+RewriteRule ^Views/EditarDepartamentos/([0-9]+)$ Views/EditarDepartamentos.php?token=$1
+#Horarios
+RewriteRule ^Views/ListarHorarios$ Views/ListarHorarios.php
+RewriteRule ^Views/CrearHorarios$ Views/CrearHorarios.php
+RewriteRule ^Views/CrearHorarios/([a-zA-Z0-9]+)$ Views/CrearHorarios.php?mensaje=$1
