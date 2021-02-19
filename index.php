@@ -1,3 +1,4 @@
+<?php include_once './Utils/SimbolyLink.php' ?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -42,6 +43,13 @@
                                     <li><a><i class="fa fa-gears"></i> Login <span class="fa fa-chevron-down"></span></a>
                                         <ul class="nav child_menu">
                                             <li><a href="Login">Iniciar Sesión</a></li>                                           
+                                        </ul>
+                                    </li>                                
+                                </ul>
+                                <ul class="nav side-menu">
+                                    <li><a><i class="fa fa-file-zip-o"></i> Plugin Desktop <span class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu">
+                                            <li><a href="Plugin/PluginDesktop.rar">Descargar Plugin</a></li>                                           
                                         </ul>
                                     </li>                                
                                 </ul>
@@ -112,13 +120,14 @@
                 <!-- footer content -->
                 <footer>
                     <div class="pull-right">
-                        Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+                        Control de Asistencias V 1.0 By <a href="https://www.youtube.com/playlist?list=PLpnYsO06oNufUlXIxMnstW5ji9VMCDy1p">MH-Tutoriales</a>
                     </div>
                     <div class="clearfix"></div>
                 </footer>
                 <!-- /footer content -->
             </div>
         </div>
+        <script> var base_url = <?php echo "'" . $config['base_url'] . "';"; ?></script>
         <!-- jQuery -->
         <script src="vendors/jquery/dist/jquery.min.js"></script>
         <!-- Bootstrap -->
@@ -134,6 +143,9 @@
         <script src="vendors/pnotify/dist/pnotify.buttons.js"></script>
         <script src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
         <script src="js/reloj.js"></script>
-        <script src="js/funciones_lecturas.js"></script>        
+        <script src="js/funciones_lecturas.js"></script>           
+        <script>
+            cargar_push();
+        </script>
     </body>
 </html>

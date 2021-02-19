@@ -86,7 +86,7 @@ if ($_POST["accion"] == "add") {
     $rss = $con->query($selectVaidDoc);
     switch ($_POST["rol"]) {
         case 4:
-            $querypermisos = "select id_submenu from sub_menu_app where id_submenu in (7,8)";
+            $querypermisos = "select id_submenu from sub_menu_app where id_submenu in (11,12)";
             break;
         default :
             $querypermisos = "select id_submenu from sub_menu_app";

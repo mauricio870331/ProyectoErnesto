@@ -9,7 +9,7 @@ $rs = $con->findAll("empresa", "where id_empresa = " . $_GET["token"], true);
     <head>
         <?php
         $title = "Crear Empresas";
-        include './css.php';
+        include 'css.php';
         ?>
     </head>
 
@@ -17,14 +17,11 @@ $rs = $con->findAll("empresa", "where id_empresa = " . $_GET["token"], true);
         <div class="container body">
             <div class="main_container">
                 <!-- Menu -->
-                <?php include './menu.php'; ?>
-                <!-- Heaer -->
-                <?php include './header.php'; ?>
+                <?php include 'menu.php'; ?>   
 
                 <div id="loader" style="float: right;margin-top: -2%;display: none;z-index: 99999999999;">
                     <img src="<?php echo $config['base_url']; ?>/images/preloader.gif" alt=""/>
                 </div>
-
                 <!-- page content -->
                 <div class="right_col" role="main">
                     <div class="">                        
@@ -110,11 +107,11 @@ $rs = $con->findAll("empresa", "where id_empresa = " . $_GET["token"], true);
                 <!-- /page content -->
 
                 <!-- footer -->
-                <?php include './footer.php'; ?>
+                <?php include 'footer.php'; ?>
                 <!-- /footer content -->
             </div>
         </div>
-        <?php include './js.php'; ?>
+        <?php include 'js.php'; ?>
         <script>
             $('#dob').datetimepicker({
                 format: 'YYYY-MM-DD'

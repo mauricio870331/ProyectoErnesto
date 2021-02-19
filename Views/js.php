@@ -1,3 +1,4 @@
+<script> var base_url = <?php echo "'" . $config['base_url'] . "';"; ?></script>
 <!-- jQuery -->
 <script src="<?php echo $config['base_url']; ?>/vendors/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap -->
@@ -33,14 +34,16 @@
 <script src="<?php echo $config['base_url']; ?>/vendors/starrr/dist/starrr.js"></script>
 <!-- Custom Theme Scripts -->
 <script src="<?php echo $config['base_url']; ?>/js/custom.js"></script>
+<!-- jquery.inputmask -->
+<script src="<?php echo $config['base_url']; ?>/vendors/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js"></script>
 <!-- Datatables -->
 <script src="<?php echo $config['base_url']; ?>/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="<?php echo $config['base_url']; ?>/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <script src="<?php echo $config['base_url']; ?>/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-<!-- Funciones personalizadas -->
-<script src="<?php echo $config['base_url']; ?>/js/funciones.js"></script>
 <!-- PNotify -->
 <script src="<?php echo $config['base_url']; ?>/vendors/pnotify/dist/pnotify.js"></script>
 <script src="<?php echo $config['base_url']; ?>/vendors/pnotify/dist/pnotify.buttons.js"></script>
 <script src="<?php echo $config['base_url']; ?>/vendors/pnotify/dist/pnotify.nonblock.js"></script>
+<!-- Funciones personalizadas -->
+<script src="<?php echo $config['base_url']; ?>/js/funciones.js"></script>
 <script src="<?php echo $config['base_url']; ?>/js/mensajes.js"></script>

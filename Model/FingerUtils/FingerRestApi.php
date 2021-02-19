@@ -17,7 +17,7 @@ if ($method == "GET") {
     $desde = $_GET['desde'];
     $hasta = $_GET['hasta'];
 
-    $sql = "select u.documento, u.nombre_completo, h.nombre_dedo, h.huella, h.imgHuella "
+    $sql = "select u.documento, concat(u.nombres, ' ', u.apellidos) nombre_completo, h.nombre_dedo, h.huella, h.imgHuella "
             . "from empleados u "
             . "inner join huellas h on u.documento  = h.documento limit " . $desde . "," . $hasta . " ";
     $rs = $con->findAll2($sql);

@@ -6,7 +6,7 @@ function getAbsolutePath() {
 
 
 isToken();
-cargar_push();
+
 var timestamp = null;
 
 function isToken() {
@@ -37,11 +37,14 @@ function activarSensorRead() {
 }
 
 function cargar_push() {
+
+//    console.log(baseUrl + "/Model/FingerUtils/httpush.php");
+
     $.ajax({
         async: true,
         type: "POST",
-        url: getAbsolutePath() + "Model/FingerUtils/httpush.php",
-        data: "&timestamp=" + timestamp + "&token=" + localStorage.getItem("srnPc"),
+        url: base_url + "/Model/FingerUtils/httpush.php",
+        data: "&timestamp=" + timestamp + "&token=" + localStorage.getItem("srnPc") + "&baseUrl=" + base_url,
         dataType: "json",
         success: function (data) {
             var json = JSON.parse(JSON.stringify(data));
@@ -53,13 +56,11 @@ function cargar_push() {
             $("#" + id + "_texto").text(json["texto"]);
             if (imageHuella !== null) {
                 $("#" + id).css('background-image', 'url(data:image/png;base64,' + imageHuella + ')');
-                if (tipo === "leer") {
-                    $("#infoUser").html("Identificacion: " + json["documento"] + "<br/>Nombre: " + json["nombre"] + "");
-                    if (json["documento"] !== "----") {
-                        addMarcacion(json["documento"]);
-                    } else {
-                        showNotify("Usuario no Identificado", "Aviso..!", "info", 3000);
-                    }
+                $("#infoUser").html("Identificacion: " + json["documento"] + "<br/>Nombre: " + json["nombre"] + "");
+                if (json["documento"] !== "----") {
+                    addMarcacion(json["documento"]);
+                } else {
+                    showNotify("Usuario no Identificado", "Aviso..!", "info", 3000);
                 }
             }
             setTimeout("cargar_push()", 1000);

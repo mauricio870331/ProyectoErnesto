@@ -18,7 +18,7 @@ $dedos[] = "Meñique Izquierdo";
     <head>
         <?php
         $title = "Crear Empleados";
-        include './css.php';
+        include 'css.php';
         ?>
     </head>
 
@@ -26,14 +26,10 @@ $dedos[] = "Meñique Izquierdo";
         <div class="container body">
             <div class="main_container">
                 <!-- Menu -->
-                <?php include './menu.php'; ?>
-                <!-- Heaer -->
-                <?php include './header.php'; ?>
-
+                <?php include 'menu.php'; ?>    
                 <div id="loader" style="float: right;margin-top: -2%;display: none;z-index: 99999999999;">
                     <img src="<?php echo $config['base_url']; ?>/images/preloader.gif" alt=""/>
                 </div>
-
                 <!-- page content -->
                 <div class="right_col" role="main">
                     <div class="">                        
@@ -104,7 +100,7 @@ $dedos[] = "Meñique Izquierdo";
                                                     <input type="text" id="apellidos" name="apellidos"  class="form-control col-md-7 col-xs-12">
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="form-group">
                                                 <label for="telefono" class="control-label col-md-3 col-sm-3 col-xs-12">Telefono <span class="required">*</span></label> 
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
@@ -218,18 +214,9 @@ $dedos[] = "Meñique Izquierdo";
                                     </button>
                                     <h4 class="modal-title" id="myModalLabel2">Asociar Huellas</h4>
                                 </div>
-                                <div class="modal-body" >
-                                    <div class="form-group">                                       
-                                        <div id="fingerPrint" style="border: solid 1px #ccc;width: 100%;height: 240px;">                                        
-                                            <img class="imgFinger" src="<?php echo $config['base_url']; ?>/images/finger.png" style="display:block;margin: auto;width: 65%;">                                                                              
-                                            <div class="col-md-12 col-sm-12 col-xs-12">
-                                                <input id="selectFinger" name="selectFinger" class="form-control" type="text" disabled="true">
-                                            </div>
-                                        </div>
-                                        <div class="txtFinger"  style="display: block;width: 100%;margin-top: 5px;padding-left: 5px;margin-bottom: -12px;">                                        
-
-                                        </div>                                        
-                                    </div>
+                                <div class="modal-body" >                                                                      
+                                    <div class="img imgFinger"></div>
+                                    <div class="txtFinger ct3"></div>
                                 </div>
                                 <div class="modal-footer">
                                     <input id="fingerOptions" type="text" style="display: none">
@@ -246,16 +233,16 @@ $dedos[] = "Meñique Izquierdo";
                 <!-- /page content -->
 
                 <!-- footer -->
-                <?php include './footer.php'; ?>
+                <?php include 'footer.php'; ?>
                 <!-- /footer content -->
             </div>
         </div>
-        <?php include './js.php'; ?>
+        <?php include 'js.php'; ?>
         <script>
             $('#dob').datetimepicker({
                 format: 'YYYY-MM-DD'
             });
-            cargar_push('<?php echo $config['base_url']; ?>');
+            cargar_push();
         </script>
     </body>
 </html>

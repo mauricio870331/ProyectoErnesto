@@ -4,6 +4,7 @@ RewriteEngine on
 RewriteRule ^Login$ login.php
 #Marcaciones
 RewriteRule ^Marcaciones$ index.php
+#Empleados
 RewriteRule ^Views/CrearEmpleados$ Views/CrearEmpleados.php
 RewriteRule ^Views/CrearEmpleados/([a-zA-Z0-9]+)$ Views/CrearEmpleados.php?mensaje=$1
 RewriteRule ^Views/ListarEmpleados$ Views/ListarEmpleados.php
@@ -26,3 +27,13 @@ RewriteRule ^Views/EditarDepartamentos/([0-9]+)$ Views/EditarDepartamentos.php?t
 RewriteRule ^Views/ListarHorarios$ Views/ListarHorarios.php
 RewriteRule ^Views/CrearHorarios$ Views/CrearHorarios.php
 RewriteRule ^Views/CrearHorarios/([a-zA-Z0-9]+)$ Views/CrearHorarios.php?mensaje=$1
+RewriteRule ^Views/EditarHorarios/([0-9]+)$ Views/EditarHorarios.php?token=$1
+RewriteRule ^Views/ListarHorarios/([a-zA-Z0-9]+)$ Views/ListarHorarios.php?mensaje=$1
+#Permisos
+RewriteRule ^Views/ListarPermisos$ Views/ListarPermisos.php
+RewriteRule ^Views/CrearPermisos$ Views/CrearPermisos.php
+RewriteRule ^Views/CrearPermisos/([a-zA-Z0-9]+)$ Views/CrearPermisos.php?mensaje=$1
+RewriteRule ^Views/EditarPermisos/([0-9]+)$ Views/EditarPermisos.php?token=$1
+RewriteRule ^Views/ListarPermisos/([a-zA-Z0-9]+)$ Views/ListarPermisos.php?mensaje=$1
+#Perfil
+RewriteRule ^Views/Perfil$ Views/Perfil.php

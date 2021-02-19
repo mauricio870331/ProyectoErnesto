@@ -7,7 +7,7 @@ include '../Model/BD.php';
     <head>        
         <?php
         $title = "Lista Horarios";
-        include './css.php';
+        include 'css.php';
         ?>
     </head>
     <body class="nav-md">
@@ -15,8 +15,6 @@ include '../Model/BD.php';
             <div class="main_container">
                 <!-- Menu -->
                 <?php include 'menu.php'; ?>
-                <!-- Heaer -->
-                <?php include 'header.php'; ?>
                 <!-- page content -->
                 <div class="right_col" role="main">
                     <div class="">
@@ -76,9 +74,9 @@ include '../Model/BD.php';
                 </div>
                 <!-- /page content -->
                 <!-- footer -->
-                <?php include './footer.php'; ?>
+                <?php include 'footer.php'; ?>
             </div>
         </div>
-        <?php include './js.php'; ?>
+        <?php include 'js.php'; ?>
     </body>
 </html>

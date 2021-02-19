@@ -30,7 +30,8 @@ for ($k = 0; $k < count($rsHuellas); $k++) {
         }
     }
 }
-//print_r($rsHuellas);die;
+//echo "<pre>";
+//print_r($dedos);die;
 
 $con->desconectar();
 //echo "<pre>";
@@ -42,7 +43,7 @@ $con->desconectar();
     <head>
         <?php
         $title = "Editar Empleados";
-        include './css.php';
+        include 'css.php';
         ?>
     </head>
 
@@ -50,14 +51,10 @@ $con->desconectar();
         <div class="container body">
             <div class="main_container">
                 <!-- Menu -->
-                <?php include './menu.php'; ?>
-                <!-- Heaer -->
-                <?php include './header.php'; ?>
-
+                <?php include 'menu.php'; ?>
                 <div id="loader" style="float: right;margin-top: -2%;display: none;z-index: 99999999999;">
                     <img src="../../images/preloader.gif" alt=""/>
                 </div>
-
                 <!-- page content -->
                 <div class="right_col" role="main">
                     <div class="">                        
@@ -265,27 +262,16 @@ $con->desconectar();
                                     </button>
                                     <h4 class="modal-title" id="myModalLabel2">Asociar Huellas</h4>
                                 </div>
-                                <div class="modal-body" >
-
-                                    <div class="form-group">                                       
-                                        <div id="fingerPrint" style="border: solid 1px #ccc;width: 100%;height: 240px;">                                        
-                                            <img class="imgFinger" src="../../images/finger.png" style="display:block;margin: auto;width: 65%;">                                                                                
-                                            <div class="col-md-12 col-sm-12 col-xs-12">
-                                                <input id="selectFinger" name="selectFinger" class="form-control" type="text" disabled="true">
-                                            </div>
-                                        </div>
-                                        <div class="txtFinger"  style="display: block;width: 100%;margin-top: 5px;padding-left: 5px;margin-bottom: -12px;">                                        
-
-                                        </div>                                        
-                                    </div>
+                                <div class="modal-body" >                                                                      
+                                    <div class="img imgFinger"></div>
+                                    <div class="txtFinger ct3"></div>
                                 </div>
                                 <div class="modal-footer">
-                                    <input id="fingerOptions" type="text" style="display: none">
+                                    <input id="fingerOptions" type="text" value="" style="display: none">
                                     <button  id="triggerButton" data-dismiss="modal" style="display: none"/>
                                     <button  data-opc="2" type="button" class="btn btn-danger closeModalFinger">Cerrar</button>
                                     <button id="updateFinger" data-opc="1" type="button" class="btn btn-success closeModalFinger" >Guardar</button>                                   
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -293,16 +279,16 @@ $con->desconectar();
                 <!-- /page content -->
 
                 <!-- footer -->
-                <?php include './footer.php'; ?>
+                <?php include 'footer.php'; ?>
                 <!-- /footer content -->
             </div>
         </div>
-        <?php include './js.php'; ?>
+        <?php include 'js.php'; ?>
         <script>
             $('#dob').datetimepicker({
                 format: 'YYYY-MM-DD'
             });
-            cargar_push('<?php echo $config['base_url']; ?>');
+            cargar_push();
         </script>
     </body>
 </html>

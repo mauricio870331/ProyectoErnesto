@@ -27,7 +27,15 @@ switch (getParameterByName()) {
     case "horarioCreado":
         showNotify("Horario creado con éxito..!", "Aviso..!", "success", 2000);
         break;
-
+    case "horarioActualizado":
+        showNotify("Horario actualizado con éxito..!", "Aviso..!", "success", 2000);
+        break;
+    case "permisoCreado":
+        showNotify("Permiso creado con éxito..!", "Aviso..!", "success", 2000);
+        break;
+    case "permisoActualizado":
+        showNotify("Permiso actualizado con éxito..!", "Aviso..!", "success", 2000);
+        break;
 
     default:
 

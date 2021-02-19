@@ -3,16 +3,14 @@
     <head>        
         <?php
             $title = "Home";
-            include './css.php';
+            include 'css.php';
         ?>
     </head>
     <body class="nav-md">
         <div class="container body">
             <div class="main_container">
                 <!-- Menu -->
-                <?php include './menu.php'; ?>
-                <!-- Heaer -->
-                <?php include './header.php'; ?>
+                <?php include 'menu.php'; ?>
                 <!-- page content -->
                 <div class="right_col" role="main">
                     <div class="">
@@ -67,9 +65,9 @@
                 </div>
                 <!-- /page content -->
                 <!-- footer -->
-                <?php include './footer.php'; ?>
+                <?php include 'footer.php'; ?>
             </div>
         </div>
-        <?php include './js.php'; ?>
+        <?php include 'js.php'; ?>
     </body>
 </html>

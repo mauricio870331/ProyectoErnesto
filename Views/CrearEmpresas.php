@@ -4,7 +4,7 @@
     <head>
         <?php
         $title = "Crear Empresas";
-        include './css.php';
+        include 'css.php';
         ?>
     </head>
 
@@ -12,14 +12,11 @@
         <div class="container body">
             <div class="main_container">
                 <!-- Menu -->
-                <?php include './menu.php'; ?>
-                <!-- Heaer -->
-                <?php include './header.php'; ?>
+                <?php include 'menu.php'; ?>               
 
                 <div id="loader" style="float: right;margin-top: -2%;display: none;z-index: 99999999999;">
                     <img src="<?php echo $config['base_url']; ?>/images/preloader.gif" alt=""/>
                 </div>
-
                 <!-- page content -->
                 <div class="right_col" role="main">
                     <div class="">                        
@@ -95,11 +92,11 @@
                 <!-- /page content -->
 
                 <!-- footer -->
-                <?php include './footer.php'; ?>
+                <?php include 'footer.php'; ?>
                 <!-- /footer content -->
             </div>
         </div>
-        <?php include './js.php'; ?>
+        <?php include 'js.php'; ?>
         <script>
             $('#dob').datetimepicker({
                 format: 'YYYY-MM-DD'

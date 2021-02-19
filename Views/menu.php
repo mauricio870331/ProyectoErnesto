@@ -28,7 +28,6 @@ foreach ($arrayMenu as $key => $value) {
 //print_r($_SESSION["obj_user"][0]);
 //die;
 ?>
-
 <div class="col-md-3 left_col">
     <div class="left_col scroll-view">
         <div class="navbar nav_title" style="border: 0;">
@@ -75,36 +74,41 @@ foreach ($arrayMenu as $key => $value) {
                             </ul>
                         </li>
                     <?php } ?>
-
-
-
                 </ul>
             </div>     
         </div>
-        <!-- /sidebar menu -->
-
-        <!-- /menu footer buttons -->
-        <div class="sidebar-footer hidden-small">
-            <a data-toggle="tooltip" data-placement="top" title="Settings">
-                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-            </a>
-            <a data-toggle="tooltip" data-placement="top" title="FullScreen">
-                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
-            </a>
-            <a data-toggle="tooltip" data-placement="top" title="Lock">
-                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
-            </a>
-            <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
-                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
-            </a>
-        </div>
-        <!-- /menu footer buttons -->
+        <!-- /sidebar menu -->     
     </div>
 </div>
+<!-- top navigation -->
+<div class="top_nav">
+    <div class="nav_menu">
+        <nav>
+            <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+            </div>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li class="">
+                    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <img  src="<?php echo ($_SESSION["obj_user"][0]["foto"]) ? $config['base_url'] . "/" . $_SESSION["obj_user"][0]["foto"] : $config['base_url'] . "/images/img.jpg"; ?>" alt=""><?php echo $_SESSION["obj_user"][0]["nombres"] . " " . $_SESSION["obj_user"][0]["apellidos"] ?>
+                        <span class=" fa fa-angle-down"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-usermenu pull-right">
+                        <li><a href="<?php echo $config['base_url'] ?>/Views/Perfil"> Perfíl</a></li> 
+                        <li><a href="<?php echo $config['base_url'] ?>/Model/Logout.php"><i class="fa fa-sign-out pull-right"></i> Cerrar Sesión</a></li>
+                    </ul>
+                </li>               
+            </ul>
+        </nav>
+    </div>
+</div>
+<!-- /top navigation -->
+
+
 <div class="modal fade bs-example-modal-sm modaltoken" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
-
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
                 </button>

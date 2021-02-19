@@ -1,6 +1,13 @@
 <?php
 
-require 'define.php';
+include_once '../Utils/SimbolyLink.php';
+if (strpos($config['base_url'], 'localhost') !== false) {
+    require 'define_local.php';
+//    echo "local";
+} else {
+    require 'define_server.php';
+//    echo "server";
+}
 
 class BD {
 

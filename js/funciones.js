@@ -1,5 +1,5 @@
-var timestamp = null;
 
+var timestamp = null;
 function getAbsolutePath() {
     var loc = window.location;
     var pathName = loc.pathname.substring(0, loc.pathname.lastIndexOf('/') + 1);
@@ -7,11 +7,8 @@ function getAbsolutePath() {
 }
 
 isToken();
-
-
 $('#modalHuellas').modal({backdrop: 'static', keyboard: false})
 $('#modalHuellas').modal('toggle');
-
 function srnPc() {
     var d = new Date();
     var dateint = d.getTime();
@@ -56,7 +53,7 @@ function activarSensor(showModal) {
         $.ajax({
             async: true,
             type: "POST",
-            url: getAbsolutePath() + "Model/FingerUtils/ActivarSensorAdd.php",
+            url: base_url + "/Model/FingerUtils/ActivarSensorAdd.php",
             data: "&token=" + localStorage.getItem("srnPc"),
             dataType: "json",
             success: function (data) {
@@ -64,19 +61,19 @@ function activarSensor(showModal) {
                 console.log(json);
                 if (json["filas"] === 1) {
 //                $("#activeSensorLocal").attr("disabled", true);   
-                    $("#" + localStorage.getItem("srnPc")).attr("src", "../images/finger.png");
+                    $("#" + localStorage.getItem("srnPc")).css('background-image', 'url(' + $("#baseurl").val() + '/images/finger.png)');
                 }
             }
         });
     }
 }
 
-function cargar_push(baseUrl) {
+function cargar_push() {
     $.ajax({
         async: true,
         type: "POST",
-        url: baseUrl + "/Model/FingerUtils/httpush.php",
-        data: "&timestamp=" + timestamp + "&token=" + localStorage.getItem("srnPc") + "&baseUrl=" + baseUrl,
+        url: base_url + "/Model/FingerUtils/httpush.php",
+        data: "&timestamp=" + timestamp + "&token=" + localStorage.getItem("srnPc"),
         dataType: "json",
         success: function (data) {
             var json = JSON.parse(JSON.stringify(data));
@@ -87,14 +84,10 @@ function cargar_push(baseUrl) {
 //            $("#" + id + "_status").text(json["statusPlantilla"]);
             $("#" + id + "_texto").text(json["texto"]);
             if (imageHuella !== null) {
-                $("#" + id).attr("src", "data:image/png;base64," + imageHuella);
-                if (tipo === "leer") {
-                    $("#documento").text(json["documento"]);
-                    $("#nombre").text(json["nombre"]);
-                    $("#imageUser").attr("src", "Model/imageUser.php?documento=" + json["documento"]);
-                }
+//                $("#" + id).attr("src", "data:image/png;base64," + imageHuella);
+                $("#" + id).css('background-image', 'url(data:image/png;base64,' + imageHuella + ')');
             }
-            setTimeout("cargar_push(" + json["baseUrl"] + ")", 1000);
+            setTimeout("cargar_push()", 1000);
         }
     });
 }
@@ -125,7 +118,7 @@ $("#crearEmpleado").click(function () {
         $.ajax({
             async: true,
             type: "POST",
-            url: $("#baseurl").val() + "/Model/empleados/addEmpleado.php",
+            url: base_url + "/Model/empleados/addEmpleado.php",
             data: data,
             dataType: "json",
             contentType: false,
@@ -141,9 +134,9 @@ $("#crearEmpleado").click(function () {
             {
                 if (response.message_code === "success") {
                     if (response.accion === "add") {
-                        setTimeout(redireccionarPagina($("#baseurl").val() + '/Views/CrearEmpleados/empleadoCreado'), 1000);
+                        setTimeout(redireccionarPagina(base_url + '/Views/CrearEmpleados/empleadoCreado'), 1000);
                     } else {
-                        setTimeout(redireccionarPagina($("#baseurl").val() + '/Views/ListarEmpleados/empleadoactualizado'), 1000);
+                        setTimeout(redireccionarPagina(base_url + '/Views/ListarEmpleados/empleadoactualizado'), 1000);
                     }
                 } else if (response.message_code === "duplicado") {
                     showNotify("Ya existe un empleado con ese numero de documento..!", "Error", "error", 3000);
@@ -154,7 +147,6 @@ $("#crearEmpleado").click(function () {
         });
     }
 });
-
 //addFinger
 $("#nextFinger").click(function () {
     var campos = ['selectFinger'];
@@ -171,7 +163,7 @@ $("#nextFinger").click(function () {
     $.ajax({
         async: true,
         type: "POST",
-        url: getAbsolutePath() + "/Model/FingerUtils/addNextFinger.php",
+        url: base_url + "/Model/FingerUtils/addNextFinger.php",
         data: data,
         dataType: "json",
         contentType: false,
@@ -192,17 +184,13 @@ $("#nextFinger").click(function () {
             }
         }
     });
-
 });
-
-
 $(".closeModalFinger").click(function () {
 ////    $('#modalHuellas').modal('toggle');
     $('#triggerButton').trigger("click");
-
     var res = $("#fingerOptions").val().split(",");
     var data = new FormData();
-    data.append("dedo", $("#selectFinger").val());
+    data.append("dedo", res[2]);
     data.append("documento", $("#documento").val());
     data.append("token", localStorage.getItem("srnPc"));
     data.append("option", $(this).data("opc"));
@@ -214,7 +202,7 @@ $(".closeModalFinger").click(function () {
     $.ajax({
         async: true,
         type: "POST",
-        url: getAbsolutePath() + "Model/FingerUtils/updateFingerTemp.php",
+        url: base_url + "/Model/FingerUtils/updateFingerTemp.php",
         data: data,
         dataType: "json",
         contentType: false,
@@ -224,7 +212,7 @@ $(".closeModalFinger").click(function () {
         {
             if (response.message_code === "success") {
                 if (response.option === "1") {
-                    $("#" + response.idHuella).attr("src", "../images/fingerprint_24px.png");
+                    $("#" + response.idHuella).attr("src", $("#baseurl").val() + "/images/fingerprint_24px.png");
                     $("#" + response.idHuella).addClass("nofire");
                 }
             } else {
@@ -233,12 +221,9 @@ $(".closeModalFinger").click(function () {
         }
     });
 });
-
-
 $(".redirect").click(function () {
     redireccionarPagina($(this).data("page"));
 });
-
 $(".finger-check").click(function () {
     if (!$(this).hasClass("nofire")) {
         var campos = ['empresa', 'departamento', 'rol', 'jornada', 'documento', 'nombres', 'apellidos', 'telefono', 'direccion'];
@@ -248,24 +233,22 @@ $(".finger-check").click(function () {
         }
         activarSensor(true);
         var data = $(this).data("id") + "," + $(this).data("accion") + "," + $(this).data("dedo") + "," + $(this).data("huella");
-        $("#fingerOptions").val(data);
-        $("#selectFinger").val($(this).data("dedo"));
+        console.log(data)
+        jQuery("#fingerOptions").val(data);
+//        $("#selectFinger").val($(this).data("dedo"));
         $('#modalHuellas').modal('toggle');
     }
 });
-
-
 //cargarDpto desde empresa
 $("#empresa").on("change", function () {
     var id_empresa = $(this).val();
     if (id_empresa !== "") {
         var data = new FormData();
         data.append("id_empresa", id_empresa);
-
         $.ajax({
             async: true,
             type: "POST",
-            url: getAbsolutePath() + "Model/departamentos/departamentoxempresa.php",
+            url: base_url + "/Model/departamentos/departamentoxempresa.php",
             data: data,
             dataType: "json",
             contentType: false,
@@ -273,7 +256,6 @@ $("#empresa").on("change", function () {
             cache: false,
             success: function (response)
             {
-
                 var opcionesDpto = "<option value=''>Seleccione</option>";
                 var opcioneshorario = "<option value=''>Seleccione</option>";
                 for (var item in response.dpto) {
@@ -291,9 +273,6 @@ $("#empresa").on("change", function () {
         $("#jornada").html("<option value=''>Seleccione</option>");
     }
 });
-
-
-
 $(".darpermiso").on("click", function () {
     var id_submenu = $(this).data("submenu");
     var id_empleado = $(this).data("empelado");
@@ -304,7 +283,7 @@ $(".darpermiso").on("click", function () {
     $.ajax({
         async: true,
         type: "POST",
-        url: $(this).data("url") + "/Model/empleados/grantepermision.php",
+        url: base_url + "/Model/empleados/grantepermision.php",
         data: data,
         dataType: "json",
         contentType: false,
@@ -320,7 +299,6 @@ $(".darpermiso").on("click", function () {
         }
     });
 });
-
 //Crear Empleados
 $("#crearEmpresa").click(function () {
     var campos = ['nom_empresa', 'documento', 'direccion', 'email'];
@@ -343,7 +321,7 @@ $("#crearEmpresa").click(function () {
         $.ajax({
             async: true,
             type: "POST",
-            url: $("#baseurl").val() + "/Model/empresas/addEmpresa.php",
+            url: base_url + "/Model/empresas/addEmpresa.php",
             data: data,
             dataType: "json",
             contentType: false,
@@ -359,9 +337,9 @@ $("#crearEmpresa").click(function () {
             {
                 if (response.message_code === "success") {
                     if (response.accion === "add") {
-                        setTimeout(redireccionarPagina($("#baseurl").val() + '/Views/CrearEmpresas/empresaCreada'), 1000);
+                        setTimeout(redireccionarPagina(base_url + '/Views/CrearEmpresas/empresaCreada'), 1000);
                     } else {
-                        setTimeout(redireccionarPagina($("#baseurl").val() + '/Views/ListarEmpresas/empresaEditada'), 1000);
+                        setTimeout(redireccionarPagina(base_url + '/Views/ListarEmpresas/empresaEditada'), 1000);
                     }
                 } else if (response.message_code === "duplicado") {
                     showNotify("Ya existe una empresa con ese numero de documento..!", "Error", "error", 3000);
@@ -379,7 +357,6 @@ $("#crearEmpresa").click(function () {
         });
     }
 });
-
 //Crear Dpartamentos
 $("#crearDepto").click(function () {
     var campos = ['descripcion', 'empresa'];
@@ -398,7 +375,7 @@ $("#crearDepto").click(function () {
         $.ajax({
             async: true,
             type: "POST",
-            url: $("#baseurl").val() + "/Model/departamentos/addDepartamento.php",
+            url: base_url + "/Model/departamentos/addDepartamento.php",
             data: data,
             dataType: "json",
             contentType: false,
@@ -414,9 +391,9 @@ $("#crearDepto").click(function () {
             {
                 if (response.message_code === "success") {
                     if (response.accion === "add") {
-                        setTimeout(redireccionarPagina($("#baseurl").val() + '/Views/CrearDepartamentos/departamentoCreado'), 1000);
+                        setTimeout(redireccionarPagina(base_url + '/Views/CrearDepartamentos/departamentoCreado'), 1000);
                     } else {
-                        setTimeout(redireccionarPagina($("#baseurl").val() + '/Views/ListarDepartamentos/departamentoActualizado'), 1000);
+                        setTimeout(redireccionarPagina(base_url + '/Views/ListarDepartamentos/departamentoActualizado'), 1000);
                     }
                 } else if (response.message_code === "duplicado") {
                     showNotify("Ya existe un departamento con esa misma informacion..!", "Error", "error", 3000);
@@ -434,8 +411,6 @@ $("#crearDepto").click(function () {
         });
     }
 });
-
-
 //Crear Horarios
 $("#crearHorario").click(function () {
     var campos = ['empresa', 'jornada', 'entrada', 'salida_c', 'entrada_c', 'salida'];
@@ -453,7 +428,7 @@ $("#crearHorario").click(function () {
         $.ajax({
             async: true,
             type: "POST",
-            url: $("#baseurl").val() + "/Model/horarios/addHorario.php",
+            url: base_url + "/Model/horarios/addHorario.php",
             data: data,
             dataType: "json",
             contentType: false,
@@ -469,9 +444,9 @@ $("#crearHorario").click(function () {
             {
                 if (response.message_code === "success") {
                     if (response.accion === "add") {
-                        setTimeout(redireccionarPagina($("#baseurl").val() + '/Views/CrearHorarios/horarioCreado'), 1000);
+                        setTimeout(redireccionarPagina(base_url + '/Views/CrearHorarios/horarioCreado'), 1000);
                     } else {
-                        setTimeout(redireccionarPagina($("#baseurl").val() + '/Views/ListarDepartamentos/departamentoActualizado'), 1000);
+                        setTimeout(redireccionarPagina(base_url + '/Views/ListarHorarios/horarioActualizado'), 1000);
                     }
                 } else if (response.message_code === "duplicado") {
                     showNotify("Ya existe un horario para esa misma jornada..!", "Error", "error", 3000);
@@ -482,7 +457,87 @@ $("#crearHorario").click(function () {
         });
     }
 });
+//Crear Permisos
+$("#addUpdatePermiso").click(function () {
+    var campos = ['id_jefe_area', 'fecha_permiso', 'inicio_permiso', 'termino_permiso', 'motivo'];
+    if (validarCampos(campos) > 0) {
+        showNotify("Los campos marcados con (*) son requeridos..!", "Error", "error", 3000);
+    } else {
+        var data = new FormData();
+        for (var item in campos) {
+            data.append(campos[item], $("#" + campos[item]).val());
+        }
+        data.append("accion", $(this).data("accion"));
+        if ($(this).data("accion") === "edit") {
+            data.append("id_permiso", $("#token").val());
+        }
+        $.ajax({
+            async: true,
+            type: "POST",
+            url: base_url + "/Model/permisos/addPermiso.php",
+            data: data,
+            dataType: "json",
+            contentType: false,
+            processData: false,
+            cache: false,
+            beforeSend: function () {
+                $('#loader').show();
+            },
+            complete: function () {
+                $('#loader').hide();
+            },
+            success: function (response)
+            {
+                if (response.message_code === "success") {
+                    if (response.accion === "add") {
+                        setTimeout(redireccionarPagina(base_url + '/Views/CrearPermisos/permisoCreado'), 1000);
+                    } else {
+                        setTimeout(redireccionarPagina(base_url + '/Views/ListarPermisos/permisoActualizado'), 1000);
+                    }
+                } else if (response.message_code === "duplicado") {
+                    showNotify("Ya existe un horario para esa misma jornada..!", "Error", "error", 3000);
+                } else {
+                    showNotify("Ocurrio un error al crear el Lead, por favor vea el log de errores..!", "Error", "error", 3000);
+                }
+            }
+        });
+    }
+});
+$("#filtrarMarcaciones").on("click", function () {
 
+    var data = new FormData();
+    data.append("inicio", $("#inicio").val());
+    data.append("fin", $("#fin").val());
+    $.ajax({
+        async: true,
+        type: "POST",
+        url: base_url + "/Model/empleados/listMarcaciones.php",
+        data: data,
+        dataType: "json",
+        contentType: false,
+        processData: false,
+        cache: false,
+        success: function (response)
+        {
+            var tr = "";
+            if (response.length > 0) {
+                for (var i = 0; i < response.length; i++) {
+                    tr += "<tr>";
+                    tr += "<td>" + response[i].entrada + "</td>";
+                    tr += "<td>" + response[i].salida_colacion + "</td>";
+                    tr += "<td>" + response[i].entrada_colacion + "</td>";
+                    tr += "<td>" + response[i].salida + "</td>";
+                    tr += "<td>" + response[i].fecha + "</td>";
+                    tr += "</tr>" + response[i].fecha + "</td>";
+                }
+            } else {
+                tr = "<tr><td colspan='6' style='text-align: center'>No hay resultados</td></tr>";
+            }
+            $("#tblMarcaciones").html(tr);
+        }
+    });
+
+});
 
 function showNotify(text, title, type, delay) {
     new PNotify({
@@ -513,51 +568,6 @@ function redireccionarPagina(pagina) {
     window.location = pagina;
 }
 
-// de aqui hacia anajo es de CRMAPP
-
-//Navegarion
-$("#Inicio").click(function () {
-    if ($(this).data("view") === "asesor") {
-        redireccionarPagina('HomeAsesor.php');
-    } else {
-        redireccionarPagina('HomeAdmin.php');
-    }
-});
-$("#backInicio").click(function () {
-    if ($(this).data("view") === "asesor") {
-        redireccionarPagina('HomeAsesor.php');
-    } else {
-        redireccionarPagina('HomeAdmin.php');
-    }
-});
-//------------------------------------------------------------------------------
-//Crear Leads
-$("#backCrearLead").click(function () {
-    if ($(this).data("view") === 2 && $("#upsection").data("view") === 2) {
-        redireccionarPagina('ListarLeads.php');
-    } else {
-        redireccionarPagina('ListarClientes.php');
-    }
-
-});
-$("#crearNuevoLead").click(function () {
-    redireccionarPagina('CrearLeads.php?token=2');
-});
-$("#crearNuevoLead2").click(function () {
-    redireccionarPagina('CrearLeads.php?token=1');
-});
-
-
-$("#error_ambulance").click(function () {
-    var href = $('.pupup_trigger').attr('href');
-    window.location.href = href;
-});
-var logAnimation = function () {
-    $(".fa-ambulance").css("color", "green");
-    setTimeout(function () {
-        $(".fa-ambulance").css("color", "red");
-    }, 500);
-}
 
 //------------------------------------------------------------------------------
 //Modal delteLead
@@ -928,7 +938,6 @@ $(".rptaDisputa").click(function () {
 $("#addRptaDisputa").click(function () {
     var campos = ['select_bureau', 'select_respuesta'];
     var countErrors = 0;
-
     //consultar aqui si el bureau ya tiene respuesta con un ajax
 
     /* if (!$(".chkrazon").length) {
@@ -1371,618 +1380,7 @@ $("#addDisputa").click(function () {
     }
 });
 //----------------------------------------
-$(".changeStatus").click(function () {
-    var data = new FormData();
-    var d = new Date();
-    var n = d.getTime();
-    data.append("log_trans", n);
-    data.append("id", $(this).data("id"));
-    data.append("estado", $(this).data("opction"));
-    var token = $(this).data("token");
-    var view = $(this).data("view");
-    $.ajax({
-        type: 'POST',
-        url: "../Model/Leads/UpdateStatusRec.php",
-        data: data,
-        dataType: 'json',
-        contentType: false,
-        processData: false,
-        cache: false,
-        beforeSend: function () {
-            $('#loader').show();
-        },
-        complete: function () {
-            $('#loader').hide();
-        },
-        success: function (response) {
-            if (response.message_code === "success") {
-                if (view === "Profile") {
-                    setTimeout(redireccionarPagina('Profile.php?token=' + token + '&mensaje=rememberOk'), 5000);
-                } else {
-                    setTimeout(redireccionarPagina('ListarRecordatorios.php?mensaje=rememberOk'), 5000);
-                }
-            } else {
-                showAlert("Ocurrio un error al actualizar la informaciòn, por favor vea el log de errores..!", "error");
-                $("#error_ambulance").css("display", "block");
-                $("#title_error").text("Codigo de Error: " + response.code_mysql);
-                $("#content_error").text("Detalle: " + response.msn + " | Comuniquese con el administrador del sistema e indique el siguiente código: " + n);
-                setInterval(logAnimation, 1000);
-                $('html, body').stop().animate({
-                    scrollTop: jQuery("#upsection").offset().top
-                }, 700);
-            }
-        }
-    });
-});
-//Fin recordatorios
 
-//Ver Notificaciones en perfil
-$("#seeNotify").click(function () {
-    $("#timeline").removeClass("active");
-    $("#tabTimeline").removeClass("active");
-    $("#docs").removeClass("active");
-    $("#tabDocs").removeClass("active");
-    $("#adjuntos").removeClass("active");
-    $("#tabAdjuntos").removeClass("active");
-    $("#notas").removeClass("active");
-    $("#tabNotas").removeClass("active");
-    $("#disputas").removeClass("active");
-    $("#tabDisputas").removeClass("active");
-    $("#producto").removeClass("active");
-    $("#tabProduct").removeClass("active");
-    $("#recordatorios").addClass("active");
-    $("#tabRecordatorios").addClass("active");
-});
-//Estados notificaciones
-$(".changeStatusNotify").click(function () {
-    var data = new FormData();
-    var d = new Date();
-    var n = d.getTime();
-    data.append("log_trans", n);
-    data.append("id", $(this).data("id"));
-    data.append("estado", $(this).data("opction"));
-    var token = $(this).data("token");
-    $.ajax({
-        type: 'POST',
-        url: "../Model/Leads/UpdateStatusNot.php",
-        data: data,
-        dataType: 'json',
-        contentType: false,
-        processData: false,
-        cache: false,
-        beforeSend: function () {
-            $('#loader').show();
-        },
-        complete: function () {
-            $('#loader').hide();
-        },
-        success: function (response) {
-            if (response.message_code === "success") {
-                setTimeout(redireccionarPagina('ListarNotificaciones.php?token=' + token + '&mensaje=notifyOk'), 5000);
-            } else {
-                showAlert("Ocurrio un error al actualizar la informaciòn, por favor vea el log de errores..!", "error");
-                $("#error_ambulance").css("display", "block");
-                $("#title_error").text("Codigo de Error: " + response.code_mysql);
-                $("#content_error").text("Detalle: " + response.msn + " | Comuniquese con el administrador del sistema e indique el siguiente código: " + n);
-                setInterval(logAnimation, 1000);
-                $('html, body').stop().animate({
-                    scrollTop: jQuery("#upsection").offset().top
-                }, 700);
-            }
-        }
-    });
-});
-//updateLeads
-$(".updateLead").click(function () {
-    redireccionarPagina('ActualizarLeads.php?token=' + $(this).data("id") + "&token2=" + $(this).data("view"));
-});
-$("#ActualizarLead").click(function () {
-    var campos = ['nombres', 'telefono1'];
-    var countErrors = 0;
-    for (var item in campos) {
-        if ($("#" + campos[item]).val() === "") {
-            countErrors++;
-            $("#" + campos[item]).css("border", "1px solid #dc3545");
-        } else {
-            $("#" + campos[item]).css("border", "1px solid #d2d6de");
-        }
-    }
-    if (countErrors > 0) {
-        showAlert("Los campos marcados en rojo son obligatorios..!", "danger");
-    } else {
-        var data = new FormData();
-        var d = new Date();
-        var n = d.getTime();
-        var campos = ['ss', 'nombres', 'apellidos', 'direccion', 'telefono1', 'telefono2', 'cita', 'ciudad', 'id_estado', 'hora_cita', 'email', 'id_lead', 'zipcode'];
-        for (var item in campos) {
-            data.append(campos[item], $("#" + campos[item]).val());
-        }
-        data.append("dob", $("#dob").val());
-        data.append("log_trans", n);
-        $.ajax({
-            async: true,
-            type: "POST",
-            url: "../Model/Leads/UpdateLead.php",
-            data: data,
-            dataType: "json",
-            contentType: false,
-            processData: false,
-            cache: false,
-            beforeSend: function () {
-                $('#loader').show();
-            },
-            complete: function () {
-                $('#loader').hide();
-            },
-            success: function (response)
-            {
-                if (response.message_code === "success") {
-                    if (jQuery("#upsection").data("view") === 1) {
-                        setTimeout(redireccionarPagina('ListarClientes.php?mensaje=updateOk'), 5000);
-                    } else {
-                        setTimeout(redireccionarPagina('ListarLeads.php?mensaje=updateOk'), 5000);
-                    }
-                } else {
-                    showAlert("Ocurrio un error al actualizar la informaciòn, por favor vea el log de errores..!", "error");
-                    $("#error_ambulance").css("display", "block");
-                    $("#title_error").text("Codigo de Error: " + response.code_mysql);
-                    $("#content_error").text("Detalle: " + response.msn + " | Comuniquese con el administrador del sistema e indique el siguiente código: " + n);
-                    setInterval(logAnimation, 1000);
-                    $('html, body').stop().animate({
-                        scrollTop: jQuery("#upsection").offset().top
-                    }, 700);
-                }
-            }
-        });
-    }
-});
-//Fin update leads
-//-----------------------------------------------------------------------------
-// infoProduct
-$(".infoProdut").click(function () {
-    if ($("#valor").val() !== "") {
-        $("#infoProdut" + $(this).data("id")).trigger("click");
-        $("#valor").css("border", "1px solid #d2d6de");
-    } else {
-        showAlert("Debes ingresar el valor total", "error");
-        $("#valor").css("border", "1px solid red");
-        $("#valor").focus();
-    }
-});
-//crear productos
-var cuotas = [];
-var sum_valor_total = 0;
-var num_cuota = 0;
-$("#newCuota").click(function () {
-    var campos = ['fecha_pago', 'valor_cuota'];
-    var countErrors = 0;
-    for (var item in campos) {
-        if ($("#" + campos[item]).val() === ""
-                || $("#" + campos[item]).val() === "Seleccione") {
-            countErrors++;
-            $("#" + campos[item]).css("border", "1px solid red");
-        } else {
-            $("#" + campos[item]).css("border", "1px solid #d2d6de");
-        }
-    }
-    if (countErrors > 0) {
-        showAlert("Los campos marcados en rojo son obligatorios", "error");
-    } else {
-        var datos_cuota = [];
-        num_cuota++;
-        datos_cuota[0] = num_cuota;
-        datos_cuota[1] = ($("#fecha_pago").val());
-        datos_cuota[2] = $("#valor_cuota").val();
-        sum_valor_total = (sum_valor_total + Number($("#valor_cuota").val()));
-        cuotas.push(datos_cuota);
-        showAlert("Cuota agregada, puedes continuar añadiendo mas", "success");
-        var htmlCuotas = "<tr id='ncuota" + num_cuota + "'>"
-                + "<td>" + num_cuota + "</td>"
-                + "<td>" + $("#valor_cuota").val() + "</td>"
-                + "<td>" + $("#fecha_pago").val() + "</td>"
-                + "<td><i class='fa fa-fw fa-eraser removeCuota' onclick='removeCuota(" + num_cuota + ")' style='color: red;cursor: pointer;font-size: 15px;'"
-                + " data-toggle='tooltip' title='Remover Cuota'></i>"
-                + "</tr>";
-        jQuery("#content_cuotas").append(htmlCuotas);
-        jQuery("#cuotas").val(cuotas.length);
-        jQuery("#tot_deuda").html("$" + sum_valor_total);
-        jQuery("#fecha_pago").val("");
-        jQuery("#valor_cuota").val("");
-    }
-});
-//------------------------------------------------------------------------------
-//remove cuota
-function removeCuota(id_cuota) {
-    console.log(cuotas);
-    var i = -1;
-    for (var item in cuotas) {
-        if (cuotas[item][0] === id_cuota) {
-            i = item;
-            break;
-        }
-    }
-    if (i !== -1) {
-        cuotas.splice(i, 1);
-    }
-    for (var item in cuotas) {
-        cuotas[item][0] = (Number(item) + Number(1));
-    }
-    jQuery("#content_cuotas").html("");
-    sum_valor_total = 0;
-    var htmlCuotas = "";
-    for (var item in cuotas) {
-        var htmlCuotas = "<tr id='ncuota" + cuotas[item][0] + "'>"
-                + "<td>" + cuotas[item][0] + "</td>"
-                + "<td>" + cuotas[item][2] + "</td>"
-                + "<td>" + cuotas[item][1] + "</td>"
-                + "<td><i class='fa fa-fw fa-eraser removeCuota' onclick='removeCuota(" + cuotas[item][0] + ")' style='color: red;cursor: pointer;font-size: 15px;'"
-                + " data-toggle='tooltip' title='Remover Cuota'></i>"
-                + "</tr>";
-        jQuery("#content_cuotas").append(htmlCuotas);
-        sum_valor_total = (sum_valor_total + Number(cuotas[item][2]));
-    }
-    num_cuota = cuotas.length;
-    jQuery("#cuotas").val(cuotas.length);
-    jQuery("#tot_deuda").html("$" + sum_valor_total);
-    jQuery("#fecha_pago").val("");
-    jQuery("#valor_cuota").val("");
-}
-//------------------------------------------------------------------------------
-//Terminar agregar cuotas
-$("#endAddCuota").click(function () {
-    var diferencia = (parseInt(sum_valor_total) - parseInt($("#valor").val()));
-    if (sum_valor_total < $("#valor").val()) {
-        showAlert("El valor total de las cuotas es menor al valor total de la deuda, diferencia:  " + diferencia, "error");
-        return;
-    }
-    if (sum_valor_total > $("#valor").val()) {
-        showAlert("El valor total de las cuotas es mayor al valor total de la deuda, diferencia:  " + diferencia, "error");
-        return;
-    }
-    $("#close").trigger("click");
-});
-//------------------------------------------------------------------------------
-//Modal Productos
-$(".newProduct").click(function () {
-    cleanModalsProducts();
-    $("#newProduct" + $(this).data("id")).trigger("click");
-    $("#newProduct").attr("data-id", $(this).data("id"));
-});
-//------------------------------------------------------------------------------
-//AddProduct
-$("#newProduct").click(function () {
-    var campos = ['tipo_producto', 'banco', 'titular', 'tipo_cuenta', 'ruta', 'cuenta', 'valor', 'cuotas'];
-    var countErrors = 0;
-    for (var item in campos) {
-        if ($("#" + campos[item]).val() === ""
-                || $("#" + campos[item]).val() === "Seleccione") {
-            countErrors++;
-            $("#" + campos[item]).css("border", "1px solid red");
-        } else {
-            $("#" + campos[item]).css("border", "1px solid #d2d6de");
-        }
-    }
-    if (countErrors > 0) {
-        showAlert("Los campos marcados en rojo son obligatorios", "error");
-    } else {
-        if (sum_valor_total < $("#valor").val()) {
-            showAlert("El valor total de las cuotas es menor al valor total de la deuda", "error");
-            return;
-        }
-        if (sum_valor_total > $("#valor").val()) {
-            showAlert("El valor total de las cuotas es mayor al valor total de la deuda", "error");
-            return;
-        }
-        if (parseInt(sum_valor_total) === parseInt($("#valor").val())) {
-            var data = new FormData();
-            var d = new Date();
-            var n = d.getTime();
-            data.append("log_trans", n);
-            for (var item in campos) {
-                data.append(campos[item], $("#" + campos[item]).val());
-            }
-            data.append("person_id", $(this).data("id"));
-            var cuotas_send = [];
-            for (var item in cuotas) {
-                cuotas_send.push("{" + cuotas[item] + "}");
-            }
-            data.append("cuotas_producto", cuotas_send);
-            var token = $(this).data("id");
-            $.ajax({
-                type: 'POST',
-                url: "../Model/Leads/AddProduct.php",
-                data: data,
-                dataType: 'json',
-                contentType: false,
-                processData: false,
-                cache: false,
-                beforeSend: function () {
-                    $('#loader').show();
-                },
-                complete: function () {
-                    $('#loader').hide();
-                },
-                success: function (response) {
-                    if (response.message_code === "success") {
-                        setTimeout(redireccionarPagina('Profile.php?token=' + token + '&mensaje=productOk'), 5000);
-                    } else {
-                        showAlert("Ocurrio un error al actualizar la informaciòn, por favor vea el log de errores..!", "error");
-                        $("#error_ambulance").css("display", "block");
-                        $("#title_error").text("Codigo de Error: " + response.code_mysql);
-                        $("#content_error").text("Detalle: " + response.msn + " | Comuniquese con el administrador del sistema e indique el siguiente código: " + n);
-                        setInterval(logAnimation, 1000);
-                        $('html, body').stop().animate({
-                            scrollTop: jQuery("#upsection").offset().top
-                        }, 700);
-                    }
-                }
-            });
-        }
-    }
-});
-// fin crear productos
-//------------------------------------------------------------------------------
-//limpiar Modals
-function cleanModalsProducts() {
-    var campos = ['fecha_pago', 'valor_cuota', 'tipo_producto', 'banco',
-        'titular', 'tipo_cuenta', 'ruta', 'cuenta', 'valor', 'cuotas'];
-    for (var item in campos) {
-        $("#" + campos[item]).val("");
-        $("#" + campos[item]).css("border", "1px solid #d2d6de");
-    }
-    cuotas = [];
-    sum_valor_total = 0;
-    num_cuota = 0;
-    jQuery("#tot_deuda").html("");
-    jQuery("#content_cuotas").html("");
-}
-
-//Friltro en home.
-$("#filterInHome").click(function () {
-
-    var campos = ['fini', 'ffin'];
-    var countErrors = 0;
-    for (var item in campos) {
-        if ($("#" + campos[item]).val() === ""
-                || $("#" + campos[item]).val() === "Seleccione") {
-            countErrors++;
-            $("#" + campos[item]).css("border", "1px solid red");
-        } else {
-            $("#" + campos[item]).css("border", "1px solid #d2d6de");
-        }
-    }
-    if (countErrors > 0) {
-        showAlert("Los campos marcados en rojo son obligatorios", "error");
-    } else {
-        var data = new FormData();
-        data.append("fini", $("#fini").val());
-        data.append("ffin", $("#ffin").val());
-        if ($("#asesor").val() != "") {
-            data.append("asesor", $("#asesor").val());
-        }
-        $.ajax({
-            type: 'POST',
-            url: "../Model/Usuarios/filterHome.php",
-            data: data,
-            dataType: 'json',
-            contentType: false,
-            processData: false,
-            cache: false,
-            beforeSend: function () {
-                $('#loader').show();
-            },
-            complete: function () {
-                $('#loader').hide();
-            },
-            success: function (response) {                //var json = JSON.stringify(response);
-                jQuery("#total_leads").text("Total: " + response.total_leads);
-                jQuery("#notificaiones_pend").text("Total: " + response.notificaiones_pend);
-                jQuery("#notificaciones_ejec").text("Total: " + response.notificaciones_ejec);
-                jQuery("#total_clientes").text(response.total_clientes);
-                jQuery("#total_venta").text("$" + response.total_venta);
-                jQuery("#total_tranfer").html("$" + response.total_tranfer);
-                jQuery("#total_proccess").html("$" + response.total_proccess);
-                jQuery("#total_aprobados").html("$" + response.total_aprobados);
-                jQuery("#total_caida").html("$" + response.total_caida);
-                console.log(response.total_leads);
-//                    if (response === "ok") {
-//                        setTimeout(redireccionarPagina('ListarRecursos.php?mensaje=delete'), 5000);
-//                    } else {
-//                        showAlert("Ocurrio un error al eliminar la el afiliado", "error");
-//                    }
-            }
-        });
-    }
-});
-//----------------------------------------------------------------------------
-//funcion enabled edit pay
-jQuery(".seleccionarCuota").click(function () {
-    if ($(this).hasClass("fa-check")) {
-        jQuery("#slect" + $(this).data("id")).attr("disabled", "disabled");
-        $(this).attr("title", "Cambiar Estado");
-        $(this).attr("data-original-title", "Cambiar Estado");
-        $(this).removeClass("fa-check");
-        $(this).addClass("fa-edit");
-        $("#slect" + $(this).data("id")).hide();
-        $("#fpago" + $(this).data("id")).hide();
-        $("#v_cuota" + $(this).data("id")).hide();
-        $("#spn" + $(this).data("id")).show();
-        $("#fshow" + $(this).data("id")).show();
-        $("#vcuota" + $(this).data("id")).show();
-        var d = new Date();
-        var n = d.getTime();
-        var data = new FormData();
-        data.append("id_estado_pago", $("#slect" + $(this).data("id")).val());
-        data.append("id_pago", $("#slect" + $(this).data("id")).data("id"));
-        data.append("token", $("#slect" + $(this).data("id")).data("token"));
-        data.append("cuota", $("#v_cuota" + $(this).data("id")).val());
-        data.append("fpago", $("#f_pago" + $(this).data("id")).val());
-        data.append("log_trans", n);
-        $.ajax({
-            type: 'POST',
-            url: "../Model/Usuarios/updatePaymentStatus.php",
-            data: data,
-            dataType: 'json',
-            contentType: false,
-            processData: false,
-            cache: false,
-            beforeSend: function () {
-                $('#loader').show();
-            },
-            complete: function () {
-                $('#loader').hide();
-            },
-            success: function (response) {
-                if (response.message_code === "success") {
-                    setTimeout(redireccionarPagina('Profile.php?token=' + response.token + '&mensaje=payUpdate'), 5000);
-                } else {
-                    showAlert("Ocurrio un error al actualizar el estado de pago, por favor vea el log de errores..!", "error");
-                    $("#error_ambulance").css("display", "block");
-                    $("#title_error").text("Codigo de Error: " + response.code_mysql);
-                    $("#content_error").text("Detalle: " + response.msn + " | Comuniquese con el administrador del sistema e indique el siguiente código: " + $("#log_trans").val());
-                    setInterval(logAnimation, 1000);
-                    $('html, body').stop().animate({
-                        scrollTop: jQuery("#upsection").offset().top
-                    }, 700);
-                }
-            }
-        });
-    } else {
-        jQuery("#slect" + $(this).data("id")).removeAttr("disabled");
-        $("#cancelCuota" + $(this).data("id")).css("display", "inline-block");
-        $(this).attr("title", "Guardar");
-        $(this).attr("data-original-title", "Guardar");
-        $(this).removeClass("fa-edit");
-        $(this).addClass("fa-check");
-        $("#spn" + $(this).data("id")).hide();
-        $("#fshow" + $(this).data("id")).hide();
-        $("#vcuota" + $(this).data("id")).hide();
-        $("#slect" + $(this).data("id")).show();
-        $("#fpago" + $(this).data("id")).show();
-        $("#v_cuota" + $(this).data("id")).show();
-    }
-});
-$(".cancelCuota").click(function () {
-    $(this).css("display", "none");
-    $("#chkview" + $(this).data("id")).attr("title", "Guardar");
-    $("#chkview" + $(this).data("id")).attr("data-original-title", "Guardar");
-    $("#chkview" + $(this).data("id")).removeClass("fa-check");
-    $("#chkview" + $(this).data("id")).addClass("fa-edit");
-    $("#spn" + $(this).data("id")).show();
-    $("#fshow" + $(this).data("id")).show();
-    $("#vcuota" + $(this).data("id")).show();
-    $("#slect" + $(this).data("id")).hide();
-    $("#fpago" + $(this).data("id")).hide();
-    $("#v_cuota" + $(this).data("id")).hide();
-});
-//------------------------------------------------------------------------------
-//Modal Addcuota
-$(".addCuota").click(function () {
-    $("#addCuota" + $(this).data("id")).trigger("click");
-    $("#addCuota").attr("data-id", $(this).data("id"));
-});
-$("#addCuota").click(function () {
-
-    var campos = ['valor_c', 'fecha_pago_c'];
-    var countErrors = 0;
-    for (var item in campos) {
-        if ($("#" + campos[item]).val() === ""
-                || $("#" + campos[item]).val() === "Seleccione") {
-            countErrors++;
-            $("#" + campos[item]).css("border", "1px solid red");
-        } else {
-            $("#" + campos[item]).css("border", "1px solid #d2d6de");
-        }
-    }
-    if (countErrors > 0) {
-        showAlert("Los campos marcados en rojo son obligatorios", "error");
-    } else {
-        var data = new FormData();
-        var d = new Date();
-        var n = d.getTime();
-        data.append("log_trans", n);
-        data.append("id_producto", $(this).data("id"));
-        data.append("token", $(this).data("token"));
-        data.append("valor_c", $("#valor_c").val());
-        data.append("fecha_pago_c", $("#fecha_pago_c").val());
-        data.append("log_trans", $("#log_trans").val());
-        $.ajax({
-            type: 'POST',
-            url: "../Model/Usuarios/AddCuota.php",
-            data: data,
-            dataType: 'json',
-            contentType: false,
-            processData: false,
-            cache: false,
-            beforeSend: function () {
-                $('#loader').show();
-            },
-            complete: function () {
-                $('#loader').hide();
-            },
-            success: function (response) {
-                if (response.message_code === "success") {
-                    setTimeout(redireccionarPagina('Profile.php?token=' + response.token + '&mensaje=addCuota'), 5000);
-                } else {
-                    showAlert("Ocurrio un error al actualizar la informaciòn, por favor vea el log de errores..!", "error");
-                    $("#error_ambulance").css("display", "block");
-                    $("#title_error").text("Codigo de Error: " + response.code_mysql);
-                    $("#content_error").text("Detalle: " + response.msn + " | Comuniquese con el administrador del sistema e indique el siguiente código: " + $("#log_trans").val());
-                    setInterval(logAnimation, 1000);
-                    $('html, body').stop().animate({
-                        scrollTop: jQuery("#upsection").offset().top
-                    }, 700);
-                }
-            }
-        });
-    }
-});
-//fin add cuota
-//------------------------------------------------------------------------------
-//Modal delteLead
-$(".deleteCuota").click(function () {
-    $("#deleteCuota" + $(this).data("id")).trigger("click");
-    $("#deleteCuota").attr("data-id", $(this).data("id"));
-    $("#deleteCuota").attr("data-token", $(this).data("token"));
-});
-$("#deleteCuota").click(function () {
-    var d = new Date();
-    var n = d.getTime();
-    var data = new FormData();
-    data.append("id_pago", $(this).data("id"));
-    data.append("token", $(this).data("token"));
-    data.append("log_trans", n);
-    $.ajax({
-        type: 'POST',
-        url: "../Model/Usuarios/DeleteCuota.php",
-        data: data,
-        dataType: 'json',
-        contentType: false,
-        processData: false,
-        cache: false,
-        beforeSend: function () {
-            $('#loader').show();
-        },
-        complete: function () {
-            $('#loader').hide();
-        },
-        success: function (response) {
-            if (response.message_code === "success") {
-                setTimeout(redireccionarPagina('Profile.php?token=' + response.token + '&mensaje=deleteCuota'), 5000);
-            } else {
-                showAlert("Ocurrio un error al eliminar la cuota, por favor vea el log de errores..!", "error");
-                $("#error_ambulance").css("display", "block");
-                $("#title_error").text("Codigo de Error: " + response.code_mysql);
-                $("#content_error").text("Detalle: " + response.msn + " | Comuniquese con el administrador del sistema e indique el siguiente código: " + $("#log_trans").val());
-                setInterval(logAnimation, 1000);
-                $('html, body').stop().animate({
-                    scrollTop: jQuery("#upsection").offset().top
-                }, 700);
-            }
-        }
-    });
-});
-//fin delete lead
 
 //DeleteDisputa
 $(".deleteDisputa").click(function () {
@@ -2031,95 +1429,6 @@ $("#deleteDisputa").click(function () {
 });
 
 
-//SendPresentation
-$(".sendPresentation").click(function () {
-    var data = new FormData();
-    var d = new Date();
-    var n = d.getTime();
-    data.append("id", $(this).data("id"));
-    data.append("log_trans", n);
-    $.ajax({
-        type: 'POST',
-        url: "../Model/PDFLibrary/CartaPresentacion.php",
-        data: data,
-        dataType: 'json',
-        contentType: false,
-        processData: false,
-        cache: false,
-        beforeSend: function () {
-            $('#loader').show();
-        },
-        complete: function () {
-            $('#loader').hide();
-        },
-        success: function (response) {
-            if (response.message_code === "success") {
-                setTimeout(redireccionarPagina('Profile.php?token=' + response.token + '&mensaje=documento'), 5000);
-            } else {
-                showAlert("Ocurrio un error al enviar el documento, por favor vea el log de errores..!", "error");
-                $("#error_ambulance").css("display", "block");
-                $("#title_error").text("Codigo de Error: " + response.code_mysql);
-                $("#content_error").text("Detalle: " + response.msn + " | Comuniquese con el administrador del sistema e indique el siguiente código: " + n);
-                setInterval(logAnimation, 1000);
-                $('html, body').stop().animate({
-                    scrollTop: jQuery("#upsection").offset().top
-                }, 700);
-            }
-        }
-    });
-});
-//Enviar Documento
-$(".sendFile").click(function () {
-    if ($(this).data("email") !== "" && validarEmail($(this).data("email"))) {
-        var data = new FormData();
-        var d = new Date();
-        var n = d.getTime();
-        data.append("log_trans", n);
-        data.append("personid", $(this).data("personid"));
-        data.append("type_doc", $(this).data("type"));
-        data.append("email", $(this).data("email"));
-        $.ajax({
-            type: 'POST',
-            url: "../Model/Utilidades/ReSendDoc.php",
-            data: data,
-            dataType: 'json',
-            contentType: false,
-            processData: false,
-            cache: false,
-            beforeSend: function () {
-                $('#loader').show();
-            },
-            complete: function () {
-                $('#loader').hide();
-            },
-            success: function (response) {
-                if (response.message_code === "success") {
-                    showAlert("Carta de Presentación enviada..!", "success", "middle");
-                } else {
-                    showAlert("Ocurrio un error al actualizar la informaciòn, por favor vea el log de errores..!", "error");
-                    $("#error_ambulance").css("display", "block");
-                    $("#title_error").text("Codigo de Error: " + response.code_mysql);
-                    $("#content_error").text("Detalle: " + response.msn + " | Comuniquese con el administrador del sistema e indique el siguiente código: " + n);
-                    setInterval(logAnimation, 1000);
-                    $('html, body').stop().animate({
-                        scrollTop: jQuery("#upsection").offset().top
-                    }, 700);
-                }
-            }
-        });
-    } else {
-        showAlert("Esta persona no tiene Email, no se puede enviar el documento..!", "error");
-    }
-
-});
-//style : success,info,warn,error
-function showAlert(text, style) {
-    $.notify(text, style);
-}
-
-function redireccionarPagina(pagina) {
-    window.location = pagina;
-}
 
 
 function validarEmail(valor) {
@@ -2132,138 +1441,4 @@ function validarEmail(valor) {
 }
 
 
-$("#error_ambulance").click(function () {
-    var href = $('.pupup_trigger').attr('href');
-    window.location.href = href;
-});
-var logAnimation = function () {
-    $(".fa-ambulance").css("color", "green");
-    setTimeout(function () {
-        $(".fa-ambulance").css("color", "red");
-    }, 500);
-}
 
-
-//Funciones notificaciones
-function clockAnimation() {
-    playSound('../sounds/sound_notify');
-    for (var i = 0; i < 6; i++) {
-        jQuery("._recordatorios").animate({
-            "margin-right": "2px",
-        }, 100);
-        jQuery("._recordatorios").animate({
-            "margin-right": "-2px",
-        }, 100);
-    }
-    jQuery("._recordatorios").animate({
-        "margin-right": "0px",
-    }, 100);
-}
-
-function playSound(filename) {
-    var mp3Source = '<source src="' + filename + '.mp3" type="audio/mpeg">';
-    var oggSource = '<source src="' + filename + '.ogg" type="audio/ogg">';
-    var embedSource = '<embed hidden="true" autostart="true" loop="false" src="' + filename + '.mp3">';
-    document.getElementById("sound").innerHTML = '<audio autoplay="autoplay">' + mp3Source + oggSource + embedSource + '</audio>';
-}
-
-
-
-function getRecordatorios() {
-    $.get("../Model/Utilidades/getRecordatorios.php", function (data) {
-        const response = JSON.parse(data);
-        if (response.count_p === 1) {
-            setTimeout(clockAnimation, 50);
-            $("#div_recordatorios").css("display", "block");
-            $(".rec").html(response.detalle_p);
-        }
-        if (response.count_v === 1) {
-            setTimeout(clockAnimation, 50);
-            $("#div_recordatoriosV").css("display", "block");
-            $(".rec2").html(response.detalle_v);
-//                        setInterval(function () {
-//                            $("#div_recordatorios").fadeOut("slow");
-//                        }, 8000);
-        }
-//                    else {
-//        console.log(response);
-//                    }
-    });
-}
-
-
-$("#close1").click(function () {
-    $("#div_recordatorios").css("display", "none");
-});
-$("#close2").click(function () {
-    $("#div_recordatoriosV").css("display", "none");
-});
-//setInterval(getRecordatorios, 5000);
-//    setInterval(getRecordatoriosV, 8000);
-//                        var sound = new Howl({
-//                            src: ['../sounds/sound_notify.mp3'],
-//                            volume: 0.5,
-//                            onend: function () {
-//                                alert('Finished!');
-//                            }
-//                        });
-//                        sound.play();
-//                        $("#sonar").trigger("click");
-//                        playSound('../sounds/sound_notify');
-
-//                        var aud = document.getElementById("myAudio");
-//                        aud.play(); // this will do the trick :)
-
-
-
-$(".toolTipMauro").click(function () {
-    if ($("#toolTip" + $(this).data("id")).is(":visible")) {
-        $("#toolTip" + $(this).data("id")).css("display", "none");
-    } else {
-        $("#toolTip" + $(this).data("id")).css("display", "block");
-    }
-});
-
-//Ocultamos el menú al cargar la página
-$("#menu").hide();
-
-
-/* mostramos el menú si hacemos click derecho
- con el ratón */
-//$(document).bind("contextmenu", function (e) {
-//    $("#menu").css({'display': 'block', 'left': e.pageX, 'top': e.pageY});
-//    return false;
-//});
-
-
-//cuando hagamos click, el menú desaparecerá
-//$(document).click(function (e) {
-//    if (e.button == 0) {
-//        $("#menu").css("display", "none");
-//    }
-//});
-
-//si pulsamos escape, el menú desaparecerá
-//$(document).keydown(function (e) {
-//    if (e.keyCode == 27) {
-//        $("#menu").css("display", "none");
-//    }
-//});
-
-//controlamos los botones del menú
-//$("#menu").click(function (e) {
-//
-//    // El switch utiliza los IDs de los <li> del menú
-//    switch (e.target.id) {
-//        case "otherwindow":
-//            alert("copiado!");
-//            break;
-//        case "mover":
-//            alert("movido!");
-//            break;
-//        case "eliminar":
-//            alert("eliminado!");
-//            break;
-//    }
-//
-//});

@@ -1,5 +1,6 @@
 <?php
 
+session_start();
 date_default_timezone_set('America/Bogota');
 
 require_once '../BD.php';
@@ -109,7 +110,7 @@ if ($select_marca == "salida" || $select_marca == "fr;salida") {
         $QUERY = "update marcaciones set salida = '" . $hora_actual . "' where id = " . $rsfecha[0]["id"];
     } else {
         $action = "INSERT";
-        $QUERY = "insert into marcaciones (documento,salida, fecha) values ('" . $_POST['documento'] . "','" . $hora_actual . "','" . $fecha_actual . "')";
+        $QUERY = "insert into marcaciones (documento,salida,fecha, id_empresa) values ('" . $_POST['documento'] . "','" . $hora_actual . "','" . $fecha_actual . "', ".$_SESSION['obj_user'][0]['id_empresa'].")";
     }
 }
 //echo $QUERY;

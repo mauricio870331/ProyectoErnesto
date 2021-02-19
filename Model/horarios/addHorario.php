@@ -25,13 +25,12 @@ if ($_POST["accion"] == "add") {
             . "'" . $_POST["entrada_c"] . "', '" . $_POST["salida"] . "')";
 } else {
     $action = "UPDATE";
-    if ($isotipo != "") {
-        $foto = ",isotipo = '" . str_replace("../", "", $isotipo) . "'";
-    }
-    $SQL = "UPDATE empresa set nombre_empresa = '" . $_POST["nom_empresa"] . "',"
-            . "documento = '" . $_POST["documento"] . "',"
-            . "direccion = '" . $_POST["direccion"] . "',"
-            . "email = '" . $_POST["email"] . "' " . $foto . " where id_empresa = " . $_POST["idEmpresa"];
+    $SQL = "UPDATE horarios set id_empresa = " . $_POST["empresa"] . ","
+            . "jornada = '" . $_POST["jornada"] . "',"
+            . "entrada = '" . $_POST["entrada"] . "',"
+            . "salida_colacion = '" . $_POST["salida_c"] . "',"
+            . "entrada_colacion = '" . $_POST["entrada_c"] . "',"
+            . "salida = '" . $_POST["salida"] . "' where id_horario = " . $_POST["idJornada"];
 }
 
 //echo $SQL;

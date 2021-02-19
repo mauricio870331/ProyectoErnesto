@@ -40,7 +40,7 @@ $reponse["nombre"] = $rows[0]['nombre'];
 $reponse["documento"] = $rows[0]['documento'];
 $reponse["imgHuella"] = $rows[0]['imgHuella'];
 $reponse["tipo"] = $rows[0]['opc'];
-$reponse["baseUrl"] = $_POST['baseUrl'];
+//$reponse["baseUrl"] = $_POST['baseUrl'];
 
 $datosJson = json_encode($reponse);
 $conn->desconectar();

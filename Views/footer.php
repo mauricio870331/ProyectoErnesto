@@ -1,7 +1,7 @@
 <!-- footer content -->
 <footer>
     <div class="pull-right">
-        Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+        Control de Asistencias V 1.0 By <a href="https://www.youtube.com/playlist?list=PLpnYsO06oNufUlXIxMnstW5ji9VMCDy1p">MH-Tutoriales</a>
     </div>
     <div class="clearfix"></div>
 </footer>
