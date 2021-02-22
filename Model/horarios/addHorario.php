@@ -1,12 +1,12 @@
 <?php
 
 session_start();
-date_default_timezone_set('America/Bogota');
+date_default_timezone_set('America/Santiago');
 require_once '../BD.php';
 $con = new BD();
 
 if ($_POST["accion"] == "add") {
-    $selectValJ = "Select id_horario from horarios where id_empresa = " . $_POST['empresa'] . " and jornada = '" . $_POST['jornada'] . "'";
+    $selectValJ = "Select id_horario from horarios where id_empresa = " . $_POST['empresa'] . " and horario = '" . $_POST['horario'] . "'";
     $rs = $con->query($selectValJ);
     if (count($rs) > 0) {
         $rsduplicate = array("message_code" => "duplicado");
@@ -18,18 +18,27 @@ if ($_POST["accion"] == "add") {
 
 $action = "INSERT";
 if ($_POST["accion"] == "add") {
-    $SQL = "INSERT into horarios (id_empresa,jornada,entrada,salida_colacion, entrada_colacion, salida) "
-            . "values (" . $_POST["empresa"] . ",'" . $_POST["jornada"] . "',"
+    $SQL = "INSERT into horarios (id_empresa, horario, entrada, salida, entrada_ini, entrada_fin, salida_ini, salida_fin, atraso, porcentaje_dia ) "
+            . "values (" . $_POST["empresa"] . ",'" . $_POST["horario"] . "',"
             . "'" . $_POST["entrada"] . "',"
-            . "'" . $_POST["salida_c"] . "',"
-            . "'" . $_POST["entrada_c"] . "', '" . $_POST["salida"] . "')";
+            . "'" . $_POST["salida"] . "',"
+            . "'" . $_POST["entrada_ini"] . "',"
+            . "'" . $_POST["entrada_fin"] . "', '" 
+            . "'" . $_POST["salida_ini"] . "',"
+            . "'" . $_POST["salida_fin"] . "', '" 
+            .  $_POST["atraso"] . ", '" 
+            . $_POST["porcentaje_dia"] . "')";
 } else {
     $action = "UPDATE";
     $SQL = "UPDATE horarios set id_empresa = " . $_POST["empresa"] . ","
-            . "jornada = '" . $_POST["jornada"] . "',"
+            . "horario = '" . $_POST["horario"] . "',"
             . "entrada = '" . $_POST["entrada"] . "',"
-            . "salida_colacion = '" . $_POST["salida_c"] . "',"
-            . "entrada_colacion = '" . $_POST["entrada_c"] . "',"
+            . "entrada_ini = '" . $_POST["entrada_ini"] . "',"
+            . "entrada_fin = '" . $_POST["entrada_fin"] . "',"
+            . "salida_ini = '" . $_POST["salida_ini"] . "',"
+            . "salida_fin = '" . $_POST["salida_fin"] . "',"
+            . "atraso = " . $_POST["atraso"] . ","
+            . "porcentaje_dia = '" . $_POST["porcentaje_dia"] . "',"
             . "salida = '" . $_POST["salida"] . "' where id_horario = " . $_POST["idJornada"];
 }
 
@@ -44,5 +53,6 @@ if ($rs['message_code'] == "error") {
 $con->desconectar();
 $rs['accion'] = $_POST["accion"];
 echo json_encode($rs);
+
 
 
