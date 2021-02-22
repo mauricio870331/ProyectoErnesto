@@ -25,7 +25,7 @@ if ($_POST["accion"] == "add") {
             . "'" . $_POST["entrada_ini"] . "',"
             . "'" . $_POST["entrada_fin"] . "', '" 
             . "'" . $_POST["salida_ini"] . "',"
-            . "'" . $_POST["salida_fin"] . "', '" 
+            . "'" . $_POST["salida_fin"] . "', " 
             .  $_POST["atraso"] . ", '" 
             . $_POST["porcentaje_dia"] . "')";
 } else {
