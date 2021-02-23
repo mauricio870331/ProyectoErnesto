@@ -18,14 +18,13 @@ if ($_POST["accion"] == "add") {
 
 $action = "INSERT";
 if ($_POST["accion"] == "add") {
-    $SQL = "INSERT into horarios (id_empresa, horario, entrada, salida, entrada_ini, entrada_fin, salida_ini, salida_fin, atraso, porcentaje_dia ) "
-            . "values (" . $_POST["empresa"] . ",'" . $_POST["horario"] . "',"
+    $SQL = "INSERT into horarios (id_empresa,horario,entrada,salida, entrada_ini, entrada_fin,salida_ini, salida_fin,atraso,porcentaje_dia ) values (" . $_POST["empresa"] . ",'" . $_POST["horario"] . "',"
             . "'" . $_POST["entrada"] . "',"
             . "'" . $_POST["salida"] . "',"
             . "'" . $_POST["entrada_ini"] . "',"
-            . "'" . $_POST["entrada_fin"] . "', '" 
+            . "'" . $_POST["entrada_fin"] . "'," 
             . "'" . $_POST["salida_ini"] . "',"
-            . "'" . $_POST["salida_fin"] . "', " 
+            . "'" . $_POST["salida_fin"] . "'," 
             .  $_POST["atraso"] . ", '" 
             . $_POST["porcentaje_dia"] . "')";
 } else {
@@ -53,6 +52,4 @@ if ($rs['message_code'] == "error") {
 $con->desconectar();
 $rs['accion'] = $_POST["accion"];
 echo json_encode($rs);
-
-
 
