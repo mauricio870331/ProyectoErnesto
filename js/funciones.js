@@ -413,7 +413,7 @@ $("#crearDepto").click(function () {
 });
 //Crear Horarios
 $("#crearHorario").click(function () {
-    var campos = ['empresa', 'jornada', 'entrada', 'salida_c', 'entrada_c', 'salida'];
+    var campos = ['empresa', 'horario', 'entrada', 'salida', 'entrada_ini', 'entrada_fin', 'salida_ini', 'salida_fin', 'atraso', 'porcentaje_dia'];
     if (validarCampos(campos) > 0) {
         showNotify("Los campos marcados con (*) son requeridos..!", "Error", "error", 3000);
     } else {
